@@ -16,7 +16,7 @@ const resolvers = {
 
     },
 
-    addBook {
+    saveBook {
 
     },
 
@@ -24,6 +24,6 @@ const resolvers = {
         
     },
 
-    login {
+    loginUser {
         
     },

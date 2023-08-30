@@ -5,7 +5,7 @@ const typeDefs = `
     email: String!
     bookCount: Int
     savedBooks: [Book]
-    }
+  }
 
   type Book {
     bookId: ID!
