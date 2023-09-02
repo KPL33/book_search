@@ -1,4 +1,3 @@
-
 //Here, we import the "User" "model", for reference by our "resolver". We also "tree-shake" and import "signToken" and "AuthenticationError" from our "auth" file, which will be used to generate authentication tokens and handle authentication errors.
 const { User } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
@@ -29,7 +28,7 @@ const resolvers = {
       return { token, user };
     },
 
-    //Here, our "login" verication compares "user" inputs to "user" and "password" info that may or may not already exist in the app's database. "if" the credentials are correct, a "token" is "return"ed, along with the "user" to which that "token" is assigned, allowing the "user" to log-in. If not, an error is "throw"n.
+    //Here, our "login" verication compares "user" inputs to "user" and "password" info that may or may not already exist in the app's database. "if" the credentials are correct, a "token" is "return"ed, along with the "user" to which that "token" is assigned, allowing the "user" to log-in. If not, an error is "throw"n. This logic is what our app uses, when it receives a "login" request from the client-side.
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       

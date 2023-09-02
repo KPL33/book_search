@@ -1,4 +1,4 @@
-//"typeDef"initions are essentially GraphQL's version of traditional "ORM Schema Models". Here, we are defining what a "User, Book, Query, Auth(oriztion), bookInput and Mutation" are and exporting these "type"s, to be utilized in our "server.js" file.
+//"typeDef"initions are essentially GraphQL's version of traditional "ORM Schema Models". Here, we are defining what a "User, Book, Query, Auth(oriztion), bookInput and Mutation" actually "are" and exporting these "type"s, to be utilized in our "server.js" file.
 
 const typeDefs = `
   type User {
