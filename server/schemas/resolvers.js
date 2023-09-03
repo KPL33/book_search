@@ -78,4 +78,5 @@ const resolvers = {
   }
 };
 
+//Here, we export the above, to be utilized for comparisons with mutations received from the client-side of our app.
 module.exports = resolvers;
