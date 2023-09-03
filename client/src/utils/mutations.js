@@ -64,3 +64,5 @@ export const REMOVE_BOOK = gql`
     }
   }
 `;
+
+//The above mutation definitions are exported from here and imported into the components in which each is utilized.
