@@ -1,7 +1,8 @@
-
 //Here, we import "GraphQLError" from "graphql", which will be used to handle "Authentication" "Error"s (defined below). We also import the built-in "jwt" (stands for "JSON Web Tokens") package from "jsonwebtoken", to handle the creation and "authentication" or JSON Web Tokens.
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
+
+const { AuthenticationError } = require("../utils/auth");
 
 //For this app, we have used a simple string for the "secret", which is used to assist in verification of the "jwt"'s "authentication". Whatever the key is, it is important to keep this information from being exposed during transactions.
 
@@ -9,25 +10,24 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
-//Here, we provide "boilerplate auth" code blocks, common to this sort of app. Witout these basic blocks, the app could not authenticate "user"s upon log-in.
+const AuthenticationError = new GraphQLError('Could not authenticate user.', {
+  extensions: {
+    code: 'UNAUTHENTICATED',
+  },
+});
+
+//Here, we provide "boilerplate" "auth"entication code blocks, common to this sort of app. Witout these basic blocks, the app could not authenticate "user"s upon log-in.
 module.exports = {
-  AuthenticationError: new GraphQLError('Could not authenticate user.', {
-    extensions: {
-      code: 'UNAUTHENTICATED',
-    },
-  }),
-  // function for our authenticated routes
-  authMiddleware: function ({ req }) {
-    // allows token to be sent via  req.query or headers
+  
+  authMiddleware: function ({ req, res, next }) {
     let token = req.body.token || req.query.token || req.headers.authorization;
 
-    // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
 
     if (!token) {
-      return res.status(400).json({ message: 'You have no token!' });
+      return res.status(400).json({ message: 'You have no token.' });
     }
 
     // verify token and get user data out of it
@@ -35,8 +35,8 @@ module.exports = {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
     } catch {
-      console.log('Invalid token');
-      return res.status(400).json({ message: 'invalid token!' });
+      console.log('Invalid token.');
+      return res.status(400).json({ message: 'invalid token.' });
     }
 
     // send to next endpoint
