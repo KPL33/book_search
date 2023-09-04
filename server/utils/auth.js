@@ -2,8 +2,6 @@
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
-const { AuthenticationError } = require("../utils/auth");
-
 //For this app, we have used a simple string for the "secret", which is used to assist in verification of the "jwt"'s "authentication". Whatever the key is, it is important to keep this information from being exposed during transactions.
 
 //We also declare that the "Token" will "expir"e "2h"ours after it is issued.
