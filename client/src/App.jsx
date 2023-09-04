@@ -8,9 +8,9 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import Navbar from './components/Navbar';
 
-//Here, we define a "new" instance of the "ApolloClient" that we imported above. We designate the "url" of the "graphql" server through which our app will access its data. We will manage queries and store them as a "new" instance of the "InMemoryCache" component we imported above.
+//Here, we define a "new" instance of the "ApolloClient" that we imported above. We designate the "uri" of the "graphql" server through which our app will access its data. We will manage queries and store them as a "new" instance of the "InMemoryCache" component we imported above.
 const client = new ApolloClient({
-  url: '/graphql',
+  uri: '/graphql',
   cache: new InMemoryCache()
 });
 
