@@ -36,9 +36,10 @@ const SignupForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log("Form submission triggered");
+    
     //Here, we create a reference to our "form" and enable our app to notice the "currentTarget" (in our case, a button) "event" (in our case, a click on that button) that will begin the process of validating user-input data in the 3 fields of our form.
     const form = event.currentTarget;
-    console.log("Is form valid?", form.checkValidity());
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
