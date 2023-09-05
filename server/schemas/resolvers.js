@@ -61,7 +61,7 @@ const resolvers = {
       };
 
       //If no "user" is logged-in, this message will appaer.
-      throw AuthenticationError;
+      throw new AuthenticationError("Please log-in to continue.");
     },
 
     //Similarly, should a "user" choose to "remove" a "Book", we provide them with that functionality here. The "bookId" entered by the "user" will be located within that user's "context" and "pull"ed (removed) from the "savebBooks" list for that user.
