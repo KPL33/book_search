@@ -24,7 +24,7 @@ const SearchBooks = () => {
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -77,20 +77,17 @@ const SearchBooks = () => {
     }
 
     try {
-      const result = await saveBook({
-        variables: { bookData: bookToSave },
+      const { data: savedBookData } = await saveBook({
+        variables: { bookData: { ...bookToSave }},
       });
-    
-      // Handle successful mutation, if needed
-      // You can access the result of the mutation via 'result'
-    
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+
+      if (savedBookData && savedBookData.saveBook) {
+        setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      } else {
+        console.log("Failed to save the book.");
+      }
     } catch (err) {
-      console.error(err); // Log the error for debugging
-      console.error(error); // Access the error returned by the mutation
-    
-      // Handle the error, possibly displaying it to the user
+      console.error(err);
     }
   };
 

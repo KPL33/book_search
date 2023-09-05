@@ -44,8 +44,9 @@ export const SEARCH_BOOKS = gql`
 
 //Here, we define the required aspects of "SAVE"ing a "BOOK" to a user's list of "SAVE"d "BOOK"s through "mutation": The user's "username" and "email" address, a list of "savedBooks" (that is already associated with the "USER"), a "Count" of "book"s in that existing list (which will be updated, once the new book is added to the list) and the details listed in the "savedBooks" object, (which are retrieved if those details are available in the database the user is querying). It sends these required variables to the server-side "resolver" file so that that file can locate the matching logic within it and help carry out the function of "SAVE"ING a "BOOK".
 export const SAVE_BOOK = gql`
-  mutation saveBook($book: SavedBookInput!) {
-    saveBook(book: $book) {
+  mutation saveBook($bookData: bookInput!) {
+    saveBook(bookData: $bookData) {
+      _id
       username
       email
       bookCount
