@@ -27,6 +27,21 @@ export const ADD_USER = gql`
   }
 `;
 
+//Here, we define the required aspects of "SEARCH"ing for a "BOOK" through "mutation". We call the function "searchBooks", passing "serachInput" (the "Book" name, entered by the user) as the variable. The data we want to receive about the "books" being searched is included between the { } and we return this object upon search. It sends these required variables to the server-side "resolver" file so that that file can locate the matching logic within it and help carry out the function of "ADD"ING the "USER".
+export const SEARCH_BOOKS = gql`
+  query searchBooks($searchInput: String!) {
+    searchBooks(searchInput: $searchInput) {
+      books {
+        bookId
+        authors
+        title
+        description
+        image
+      }
+    }
+  }
+`;
+
 //Here, we define the required aspects of "SAVE"ing a "BOOK" to a user's list of "SAVE"d "BOOK"s through "mutation": The user's "username" and "email" address, a list of "savedBooks" (that is already associated with the "USER"), a "Count" of "book"s in that existing list (which will be updated, once the new book is added to the list) and the details listed in the "savedBooks" object, (which are retrieved if those details are available in the database the user is querying). It sends these required variables to the server-side "resolver" file so that that file can locate the matching logic within it and help carry out the function of "SAVE"ING a "BOOK".
 export const SAVE_BOOK = gql`
   mutation saveBook($book: SavedBookInput!) {

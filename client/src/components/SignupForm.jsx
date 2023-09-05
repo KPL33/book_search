@@ -35,7 +35,6 @@ const SignupForm = () => {
   //"Form"s by "Default" will reload the webpage when the are "Submit"ted, so we "prevent" that behavior here.
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submission triggered");
     
     //Here, we create a reference to our "form" and enable our app to notice the "currentTarget" (in our case, a button) "event" (in our case, a click on that button) that will begin the process of validating user-input data in the 3 fields of our form.
     const form = event.currentTarget;
@@ -47,7 +46,6 @@ const SignupForm = () => {
 
     //Here, our app will "try" to execute the mutation on the data retrieved through "addUser" (declared above), expecting data in the "variables" listed.
     try {
-      console.log("Entering try block");
       const { data } = await addUser({
         variables: {
           username: userFormData.username,
@@ -55,8 +53,6 @@ const SignupForm = () => {
           password: userFormData.password,
         },
       });
-
-      console.log("full response", data);
 
       if (data && data.addUser) {
         console.log("User data:", data.addUser);
