@@ -8,8 +8,10 @@ import {
   Row
 } from 'react-bootstrap';
 
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations'; 
+
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -17,9 +19,12 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
+  
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -36,7 +41,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`);
 
       if (!response.ok) {
         throw new Error('A search for a book matching the provided information failed. Please try again.');
@@ -72,16 +77,20 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
+      const result = await saveBook({
+        variables: { bookData: bookToSave },
+      });
+    
+      // Handle successful mutation, if needed
+      // You can access the result of the mutation via 'result'
+    
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
-      console.error(err);
+      console.error(err); // Log the error for debugging
+      console.error(error); // Access the error returned by the mutation
+    
+      // Handle the error, possibly displaying it to the user
     }
   };
 
