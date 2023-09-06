@@ -1,6 +1,7 @@
 //Here, we import the "User" "model", for reference by our "resolver". We also "tree-shake" and import "signToken" and "AuthenticationError" from our "auth" file, which will be used to generate authentication tokens and handle authentication errors.
+const { AuthenticationError } = require("apollo-server-express")
 const { User } = require("../models");
-const { signToken, AuthenticationError } = require("../utils/auth");
+const { signToken } = require("../utils/auth");
 
 //Our "resolvers" object holds our "Query" and "Mutation" functions.
 const resolvers = {
@@ -48,24 +49,18 @@ const resolvers = {
     },
 
     //Here, we give our app the means to "save" a "Book", once the "user" clicks the button to do so on the app page. Again, the required "parent" parameter is not being used, but the chosen "book" is extracted (via "destructuring") and added to the "context" of the "user", "if" tjat "User" is found, when the the function attempts toe "add" the "book" "To" the "Set" "savedBooks". Including "new: true" ensures that subsequent searches for the "updatedUser" will include the books that have been added.
-    saveBook: async (parent, { book }, context) => {
+    saveBook: async (parent, { bookData }, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
-          { _id: bookId },
-          {
-            $addToSet: {
-              savedBooks: bookData,
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $push: { savedBooks: bookData } },
+          { new: true }
         );
+        return updatedUser;
       }
 
       //If no "user" is logged-in, this message will appaer.
-      throw AuthenticationError;
+      throw AuthenticationError("You need to be logged in.");
     },
 
     //Similarly, should a "user" choose to "remove" a "Book", we provide them with that functionality here. The "bookId" entered by the "user" will be located within that user's "context" and "pull"ed (removed) from the "savebBooks" list for that user.
@@ -80,7 +75,7 @@ const resolvers = {
         return updatedUser;
       }
 
-      throw AuthenticationError;
+      throw AuthenticationError("Something went wrong.");
     },
   },
 };
