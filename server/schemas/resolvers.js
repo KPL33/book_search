@@ -15,7 +15,7 @@ const resolvers = {
         return userData;
       };
       //If there is no "user" in the "return"ed "context", this error will appear.
-      throw new AuthenticationError("Please log in.");
+      throw AuthenticationError;
     }
   },
   
@@ -33,13 +33,13 @@ const resolvers = {
       const user = await User.findOne({ email });
       
       if (!user) {
-        throw new AuthenticationError("Login information is incorrect. Please try again.");
+        throw AuthenticationError;
       };
       
       const correctPw = await user.isCorrectPassword(password);
       
       if (!correctPw) {
-        throw new AuthenticationError("Login information is incorrect. Please try again.");
+        throw AuthenticationError;
       };
 
       const token = signToken(user);
@@ -61,7 +61,7 @@ const resolvers = {
       };
 
       //If no "user" is logged-in, this message will appaer.
-      throw new AuthenticationError("Please log-in to continue.");
+      throw AuthenticationError;
     },
 
     //Similarly, should a "user" choose to "remove" a "Book", we provide them with that functionality here. The "bookId" entered by the "user" will be located within that user's "context" and "pull"ed (removed) from the "savebBooks" list for that user.
