@@ -25,6 +25,7 @@ const SignupForm = () => {
   //This function gets called whenever the "event" of a "Change" occurs on the "target" (the "Data" of our "Form"). When the "name" here essentially refers to the "name" of the fields ("username", "email" and "password") and the "value" of those fields (input by the user).
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    
     //The "..." (spread operator) spreads the existing "userFormData" and updates it to the new values input by the user. This is done so that each field is able to reflect the changes to its value, as those changes are being made.
     setUserFormData({ ...userFormData, [name]: value });
   };
