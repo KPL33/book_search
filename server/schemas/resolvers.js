@@ -8,6 +8,7 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       //If there is a "user" in the "context", we fetch the "userData", using the "findOne" method on the "model" called "User" model's. The method searches for a "user" with the "_id" matching the "_id" of the authenticated "user" from the "context". '.select("-__v -password")' specifies that  the "return"ed data should exclude the "password" field, (because it contains sensitive information that we don't want to expose).
+      console.log(context);
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id }).select(
           "-__v -password"
@@ -34,13 +35,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        console.error(err);
+        throw new Error("There was an error.");
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        console.error(err);
+        throw new Error("There was an error.");
       }
 
       const token = signToken(user);
@@ -60,7 +61,7 @@ const resolvers = {
       }
 
       //If no "user" is logged-in, this message will appaer.
-      console.error(err);
+      // console.error(err);
     },
 
     //Similarly, should a "user" choose to "remove" a "Book", we provide them with that functionality here. The "bookId" entered by the "user" will be located within that user's "context" and "pull"ed (removed) from the "savebBooks" list for that user.
@@ -75,7 +76,7 @@ const resolvers = {
         return updatedUser;
       }
 
-      console.error(err);
+      // console.error(err);
     },
   },
 };
