@@ -13,9 +13,10 @@ const resolvers = {
           "-__v -password"
         );
         return userData;
+      } else {
+        throw new Error('Could not authenticate user. Please try again.');
       }
       //If there is no "user" in the "return"ed "context", this error will appear.
-      throw AuthenticationError;
     },
   },
 
