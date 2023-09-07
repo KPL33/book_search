@@ -1,5 +1,4 @@
 //Here, we import the "User" "model", for reference by our "resolver". We also "tree-shake" and import "signToken" and "AuthenticationError" from our "auth" file, which will be used to generate authentication tokens and handle authentication errors.
-const { AuthenticationError } = require("apollo-server-express")
 const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
@@ -34,13 +33,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw AuthenticationError;
+        console.error(err);
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw AuthenticationError;
+        console.error(err);
       }
 
       const token = signToken(user);
@@ -60,7 +59,7 @@ const resolvers = {
       }
 
       //If no "user" is logged-in, this message will appaer.
-      throw AuthenticationError("You need to be logged in.");
+      console.error(err);
     },
 
     //Similarly, should a "user" choose to "remove" a "Book", we provide them with that functionality here. The "bookId" entered by the "user" will be located within that user's "context" and "pull"ed (removed) from the "savebBooks" list for that user.
@@ -75,7 +74,7 @@ const resolvers = {
         return updatedUser;
       }
 
-      throw AuthenticationError("Something went wrong.");
+      console.error(err);
     },
   },
 };
